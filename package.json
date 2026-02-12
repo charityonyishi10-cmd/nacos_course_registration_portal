@@ -1,0 +1,21 @@
+{
+  "name": "god-help-me",
+  "version": "1.0.0",
+  "description": "course-registration-portal",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Onyihi Charity Chinecherem",
+  "license": "ISC",
+  "dependencies": {
+    "connect-mongo": "^6.0.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mongodb": "^7.0.0",
+    "mongoose": "^9.1.5"
+  }
+}

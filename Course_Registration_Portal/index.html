@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Registration Portal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Container for toast notifications -->
+    <div id="toast-container"></div>
+
+    <header class="hidden">
+        <div class="header-container">
+            <div class="header-left">
+             <button type="button" id="module-btn" class="module-btn">&#9776;</button>
+        <img src="Image/nacos image.png" alt="nacos image">
+        <b>NIGERIA ASSOCIATION OF COMPUTING STUDENTS</b>
+        <a href="#" class="nav-link">Dashboard</a>
+            </div>
+                 
+            <div class="header-right">
+                 <div class="notification-dropdown">
+                    <div id="notification-trigger" class="notification-trigger">
+                        <img src="Image/notification icon.png" alt="Notification">
+                        <span id="notification-badge" class="notification-badge hidden">0</span>
+                    </div>
+                    <div id="notification-dropdown-content" class="notification-dropdown-content hidden">
+                        <h4>Notifications</h4>
+                        <ul id="notification-list">
+                            <!-- Notifications will be populated here by JavaScript -->
+                        </ul>
+                    </div>
+                 </div>
+                    <div class="profile-dropdown">
+                        <div id="profile-trigger" class="profile-trigger">
+                            <img src="Image/avatar6.png" alt="Profile Picture">
+                        </div>
+                        <div id="profile-dropdown-content" class="profile-dropdown-content hidden">
+                            <!-- Profile details will be populated here by JavaScript -->
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="success-banner" class="hidden">
+        <img src="Image/good mark image.png" alt="good mark" height="25px" width="25px"> Registration Successful! Your courses have been registered.
+    </div>
+
+    <section id="login-section" class="container">
+        <h1>NACOS Course Registration Portal</h1>
+
+        <div id="login-form-container">
+            <h2>Login to Access Your Portal</h2>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Username:</label><br>
+                    <input type="text" id="username" placeholder="Enter Username" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Password:</label><br>
+                    <div class="password-wrapper">
+                        <input type="password" id="password" placeholder="Enter Password" required>
+                        <span id="togglePassword" class="toggle-password-icon"><i class="fa-solid fa-eye"></i></span>
+                    </div>
+                </div>
+                
+                 <a href="#" id="forgot-password-link" class="forgot-pwd">Forgot Password? Click here</a>
+                <button type="submit" class="btn-primary">SIGN IN</button>
+            </form>
+            <p class="form-switcher">Don't have an account? <a href="#" id="show-signup-link">Sign Up</a></p>
+        </div>
+
+        <div id="signup-form-container" class="hidden">
+            <h2>Create Your Account</h2>
+            <form id="signupForm">
+                <div class="input-group">
+                    <label for="signup-name">Full Name:</label>
+                    <input type="text" id="signup-name" placeholder="e.g., John Doe" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-username">Registration Number:</label>
+                    <input type="text" id="signup-username" placeholder="e.g., 2020/123456" required>
+                </div>
+                <div class="input-group">
+                    <label for="signup-password">Password:</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="signup-password" placeholder="Min. 8 characters, with special chars" required>
+                        <span id="toggleSignupPassword" class="toggle-password-icon"><i class="fa-solid fa-eye"></i></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn-primary">SIGN UP</button>
+            </form>
+            <p class="form-switcher">Already have an account? <a href="#" id="show-login-link">Sign In</a></p>
+        </div>
+
+        <div id="forgot-password-container" class="hidden">
+            <h2>Reset Password</h2>
+            <p style="margin-bottom: 15px;">Enter your registration number to receive a password reset link.</p>
+            <form id="forgotPasswordForm">
+                <div class="input-group">
+                    <label for="reset-reg-number">Registration Number:</label>
+                    <input type="text" id="reset-reg-number" placeholder="e.g., 2020/123456" required>
+                </div>
+                <button type="submit" class="btn-primary">SEND RESET LINK</button>
+            </form>
+            <p class="form-switcher"><a href="#" id="back-to-login-link">Back to Login</a></p>
+        </div>
+
+    </section>
+
+    <!-- Main content area after login -->
+    <main id="main-content" class="container hidden">
+        <div id="welcome-content">
+            <h1>Welcome to Your Student Portal</h1>
+            <p>
+                All portal features are now located in the slide-out menu.
+                <br>
+                Click the <strong><span style="color: #00703c;">&#9776;</span></strong> icon in the top-left corner to get started.
+            </p>
+        </div>
+
+        <!-- Update Profile Content Area -->
+        <div id="profile-update-content" class="dashboard-content hidden">
+            <h3>Update Student Profile</h3>
+            <p>Keep your contact information up to date.</p>
+            <form id="profileUpdateForm">
+                <div class="input-group">
+                    <label>Full Name (Read-only):</label>
+                    <input type="text" id="update-name" readonly>
+                </div>
+                <div class="input-group">
+                    <label>Registration Number (Read-only):</label>
+                    <input type="text" id="update-regNumber" readonly>
+                </div>
+                <div class="input-group">
+                    <label for="update-email">Email Address:</label>
+                    <input type="email" id="update-email" required>
+                </div>
+                <div class="input-group">
+                    <label for="update-contact">Phone Contact:</label>
+                    <input type="text" id="update-contact" required>
+                </div>
+                <div class="input-group">
+                    <label for="update-age">Age:</label>
+                    <input type="number" id="update-age" required>
+                </div>
+                <div class="input-group">
+                    <label for="update-address">Residential Address:</label>
+                    <input type="text" id="update-address" required>
+                </div>
+                <div class="input-group">
+                    <label for="update-state">State of Origin:</label>
+                    <input type="text" id="update-state" required>
+                </div>
+                
+                <button type="submit" class="btn-submit">Save Profile Details</button>
+            </form>
+        </div>
+
+        <!-- Print Course Form Content Area -->
+        <div id="print-form" class="dashboard-content hidden">
+            <div id="printable-area">
+                <div class="print-header">
+                    <img src="Image/nacos image.png" alt="NACOS Logo">
+                    <div class="print-title">
+                        <h2>NIGERIA ASSOCIATION OF COMPUTING STUDENTS</h2>
+                        <h3>Course Registration Slip</h3>
+                        <p>2023/2024 Academic Session</p>
+                    </div>
+                </div>
+                
+                <div class="student-info-print" id="print-student-info">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="table-responsive">
+                    <table id="print-course-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Title</th>
+                                <th>Units</th>
+                                <th>Semester</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                
+                <div class="total-units-print" id="print-total-units"></div>
+
+                <div class="print-signature">
+                    <div class="sig-line">Student's Signature</div>
+                    <div class="sig-line">Course Adviser's Signature</div>
+                </div>
+            </div>
+            
+            <button onclick="window.print()" class="btn-primary" style="margin-top: 20px; width: auto;">Print / Save as PDF</button>
+        </div>
+
+        <!-- Course Registration Content Area -->
+        <div id="registration-content" class="dashboard-content hidden">
+        
+            <h3>Register New Courses</h3>
+        <p>Select your level and semester to view available courses.</p>
+
+        <div class="selectors">
+            <label>Select Level:</label>
+            <select id="levelSelect">
+                <option value="chooseLevel">-- Choose Level --</option>
+                <option value="100">100 Level</option>
+                <option value="200">200 Level</option>
+                <option value="300">300 Level</option>
+                <option value="400">400 Level</option>
+            </select>
+
+            <label>Select Semester:</label>
+            <select id="semesterSelect">
+                <option value="chooseSemester">-- Choose Semester --</option>
+                <option value="first">First semester</option>
+                <option value="second">Second Semester</option>
+            </select>
+
+            <button type="button" onclick="loadCourseList()" class="btn-load">View Courses</button>
+            </div>
+
+            <form id="courseForm">
+                <!-- Dynamic Course List Container -->
+                <div id="dynamic-course-list" class="hidden">
+                    <h4 id="course-list-title"></h4>
+                    <div class="table-responsive">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Select</th>
+                                    <th>Course Code</th>
+                                    <th>Course Title</th>
+                                    <th>Units</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody id="course-list-body">
+                                <!-- Rows will be inserted here by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="borrow-course-section">
+                    <h4>Borrow Courses</h4>
+                    <p>Select the level and semester of the course you wish to borrow and add to your registration.</p>
+        
+                    <div class="selectors">
+                        <label>Select Level:</label>
+                        <select id="borrowLevelSelect">
+                            <option value="">-- Choose Level --</option>
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                        </select>
+        
+                        <label>Select Semester:</label>
+                        <select id="borrowSemesterSelect">
+                            <option value="">-- Choose Semester --</option>
+                            <option value="first">First semester</option>
+                            <option value="second">Second Semester</option>
+                        </select>
+        
+                        <button type="button" onclick="loadBorrowCourses()" class="btn-load">View Courses</button>
+                    </div>
+        
+                    <div id="borrow-course-container">
+                        <div class="table-responsive">
+                            <table id="borrow-course-table" class="hidden">
+                                <thead>
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Course Code</th>
+                                        <th>Course Title</th>
+                                        <th>Units</th>
+                                        <th>Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="borrow-course-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="total-units-container">
+                    Total Units Selected: <span id="total-units">0</span> / 24
+                </div>
+
+          <button type="submit" class="btn-submit">Submit Selected Course Only</button>
+
+            </form>
+        </div>
+    </main>
+
+    <nav id="dashboard-section" class="module-sidebar hidden">
+        <h1>Student Dashboard:</h1>
+        <nav class="dash-nav">
+            <ul>
+                <li class="active" data-target="registration-content">Course Registration</li>
+                <li data-target="profile-update-content">Update Profile</li>
+                <li data-target="print-form">Print Course Form</li>
+                <li>Logout</li>
+            </ul>
+        </nav>
+    </nav>
+
+    <!-- Overlay for when the module is open -->
+    <div id="module-overlay" class="module-overlay hidden"></div>
+
+    <footer>
+        <p>2026 Nigeria Association of Computing Students (NACOS) ICT Department</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
