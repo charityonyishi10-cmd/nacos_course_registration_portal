@@ -15,7 +15,7 @@ const PORT = 3000;
 // --- MIDDLEWARE ---
 app.use(cors()); // Allows your frontend to communicate with this backend
 app.use(express.json()); // Parses JSON data sent from forms
-app.use(express.static(path.join(__dirname, 'Course_Registration_Portal'))); // Serve frontend files
+app.use(express.static(__dirname)); // Serve frontend files
 
 // --- MONGODB CONNECTION ---
 // Connects to MongoDB Atlas
