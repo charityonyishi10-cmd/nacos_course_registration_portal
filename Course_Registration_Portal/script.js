@@ -199,17 +199,25 @@ loginForm.addEventListener('submit', async function (e) {
             body: JSON.stringify({ regNumber: username, password })
         });
 
-        const data = await response.json();
-
-        if (response.ok) {
-            currentUser = data.student;
-            showDashboard();
-            populateProfile(currentUser);
+        // Check if response is JSON (successful server response)
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
+            if (response.ok) {
+                currentUser = data.student;
+                showDashboard();
+                populateProfile(currentUser);
+            } else {
+                showToast(data.message || "Login failed", 'error');
+            }
         } else {
-            showToast(data.message || "Login failed", 'error');
+            // Server returned HTML (likely a 500 or 502 error page due to crash)
+            console.error("Server Error (Non-JSON):", await response.text());
+            showToast("Server is not responding. Check hosting logs.", 'error');
         }
     } catch (error) {
-        showToast("Server error. Please try again later.", 'error');
+        console.error("Login Network Error:", error);
+        showToast("Connection failed. Please check your internet.", 'error');
     }
 });
 
@@ -252,16 +260,24 @@ signupForm.addEventListener('submit', async function(e) {
             body: JSON.stringify({ name: fullName, regNumber, password })
         });
 
-        const data = await response.json();
-        if (response.ok) {
-            showToast("Registration successful! You can now sign in.", 'success');
-            signupForm.reset();
-            showLoginLink.click();
+        // Check if response is JSON
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
+            if (response.ok) {
+                showToast("Registration successful! You can now sign in.", 'success');
+                signupForm.reset();
+                showLoginLink.click();
+            } else {
+                showToast(data.message || "Registration failed", 'error');
+            }
         } else {
-            showToast(data.message || "Registration failed", 'error');
+            console.error("Server Error (Non-JSON):", await response.text());
+            showToast("Server is unreachable (Check MongoDB Connection).", 'error');
         }
     } catch (error) {
-        showToast("Server error during registration.", 'error');
+        console.error("Signup Network Error:", error);
+        showToast("Network error. Please try again.", 'error');
     }
 });
 
