@@ -34,7 +34,7 @@ app.use(session({
 mongoose.connect(MONGO_URI)
     .then(() => {
         console.log('Connected to MongoDB Atlas');
-        startServer();
+        seedCourses();
     })
     .catch(err => console.error('Could not connect to MongoDB Atlas:', err));
 
@@ -258,9 +258,6 @@ async function seedCourses() {
 }
 
 // --- START SERVER FUNCTION ---
-async function startServer() {
-    await seedCourses();
-    app.listen(PORT, () => {
-        console.log(`Server running on http://localhost:${PORT}`);
-    });
-}
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
