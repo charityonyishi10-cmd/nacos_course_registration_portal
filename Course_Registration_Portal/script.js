@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function checkSession() {
     try {
         // Ask the server if we have a valid session cookie
-        const response = await fetch('http://localhost:3000/check-session', { credentials: 'include' });
+        const response = await fetch('/check-session', { credentials: 'include' });
         if (!response.ok) {
             throw new Error('No active session');
         }
@@ -34,7 +34,7 @@ async function checkSession() {
 
 function logout() {
     // Tell the server to destroy the session
-    fetch('http://localhost:3000/logout', { method: 'POST', credentials: 'include' })
+    fetch('/logout', { method: 'POST', credentials: 'include' })
         .then(() => {
             currentUser = null;
             window.location.reload(); // Reload the page to reset state and trigger checkSession
@@ -122,7 +122,7 @@ forgotPasswordForm.addEventListener('submit', async (e) => {
     const regNumber = document.getElementById('reset-reg-number').value;
 
     try {
-        const response = await fetch('http://localhost:3000/forgot-password', {
+        const response = await fetch('/forgot-password', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ regNumber })
@@ -193,7 +193,7 @@ loginForm.addEventListener('submit', async function (e) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/login', {
+        const response = await fetch('/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' }, credentials: 'include',
             body: JSON.stringify({ regNumber: username, password })
@@ -246,7 +246,7 @@ signupForm.addEventListener('submit', async function(e) {
     }
 
     try {
-        const response = await fetch('http://localhost:3000/signup', {
+        const response = await fetch('/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name: fullName, regNumber, password })
@@ -328,7 +328,7 @@ async function loadCourseList(e) {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/courses?level=${level}&semester=${semester}`);
+        const response = await fetch(`/courses?level=${level}&semester=${semester}`);
         const courses = await response.json();
 
         const listContainer = document.getElementById('dynamic-course-list');
@@ -375,7 +375,7 @@ async function loadBorrowCourses(e) {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000/courses?level=${level}&semester=${semester}`);
+        const response = await fetch(`/courses?level=${level}&semester=${semester}`);
         const courses = await response.json();
 
         const table = document.getElementById('borrow-course-table');
@@ -478,7 +478,7 @@ async function handleFormSubmit(e, formElement) {
 
     try {
         // Send the data to your Node.js server
-        const response = await fetch('http://localhost:3000/register-courses', {
+        const response = await fetch('/register-courses', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -533,7 +533,7 @@ if (profileUpdateForm) {
             state: document.getElementById('update-state').value
         };
 
-        const response = await fetch('http://localhost:3000/update-profile', {
+        const response = await fetch('/update-profile', {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(updates)
@@ -590,7 +590,7 @@ function loadPrintForm() {
         // For now, we can try to fetch all courses or just display codes.
         // A better approach is to fetch details from server.
         // Let's fetch all courses to lookup details (simple approach for now)
-        fetch('http://localhost:3000/courses?level=&semester=').then(res => res.json()).then(allCourses => {
+        fetch('/courses?level=&semester=').then(res => res.json()).then(allCourses => {
              registeredCodes.forEach(code => {
                 const course = allCourses.find(c => c.code === code);
                 if (course) {
