@@ -20,18 +20,22 @@ app.use(express.static(__dirname)); // Serve frontend files
 // --- MONGODB CONNECTION ---
 // Connects to MongoDB Atlas
 // IMPORTANT: Replace <password> with your actual Atlas password
-const MONGO_URI = "mongodb+srv://chinecherem_db_user:18636753@chinecherem.bgrafaj.mongodb.net/?appName=chinecherem";
+const MONGO_URI = "mongodb+srv://chinecherem_db_user:18636753@chinecherem.bgrafaj.mongodb.net/nacos_portal?appName=chinecherem";
 
 // --- SESSION MIDDLEWARE ---
+const store = MongoStore.create({ mongoUrl: MONGO_URI });
+store.on('error', (err) => console.error("Session Store Error:", err));
+
 app.use(session({
     secret: 'nacos_secret_key', // In production, use a secure environment variable
     resave: false,
     saveUninitialized: false,
-    store: MongoStore.create({ mongoUrl: MONGO_URI }), // Stores sessions in MongoDB
+    store: store, // Stores sessions in MongoDB
     cookie: { maxAge: 1000 * 60 * 60 * 24 } // Session expires in 1 day
 }));
 
-mongoose.connect(MONGO_URI)
+// Add timeout to fail fast if DB is unreachable (5 seconds)
+mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 30000 })
     .then(() => {
         console.log('Connected to MongoDB Atlas');
         seedCourses();
@@ -85,7 +89,8 @@ app.post('/signup', async (req, res) => {
         await newStudent.save();
         res.status(201).json({ message: 'User created successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating user', error });
+        console.error("Signup Error:", error);
+        res.status(500).json({ message: 'Database Error: ' + error.message });
     }
 });
 
@@ -103,7 +108,8 @@ app.post('/login', async (req, res) => {
         req.session.user = student;
         res.json({ student });
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+        console.error("Login Error:", error);
+        res.status(500).json({ message: 'Database Error: ' + error.message });
     }
 });
 
