@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
@@ -20,14 +21,14 @@ app.use(express.static(__dirname)); // Serve frontend files
 // --- MONGODB CONNECTION ---
 // Connects to MongoDB Atlas
 // IMPORTANT: Replace <password> with your actual Atlas password
-const MONGO_URI = "mongodb+srv://chinecherem_db_user:18636753@chinecherem.bgrafaj.mongodb.net/nacos_portal?appName=chinecherem";
+const MONGO_URI = process.env.MONGO_URI;
 
 // --- SESSION MIDDLEWARE ---
 const store = MongoStore.create({ mongoUrl: MONGO_URI });
 store.on('error', (err) => console.error("Session Store Error:", err));
 
 app.use(session({
-    secret: 'nacos_secret_key', // In production, use a secure environment variable
+    secret: process.env.SESSION_SECRET, // In production, use a secure environment variable
     resave: false,
     saveUninitialized: false,
     store: store, // Stores sessions in MongoDB
